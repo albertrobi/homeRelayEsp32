@@ -7,8 +7,9 @@
 *********/
 
 // Import required libraries
-#include "ESP8266WiFi.h"
-#include "ESPAsyncWebServer.h"
+#include <WiFi.h>
+#include <AsyncTCP.h>
+#include <ESPAsyncWebServer.h>
 #include <ArduinoJson.h>
 
 // Set to true to define Relay as Normally Open (NO)
@@ -28,7 +29,7 @@ const char* password = "emeseesrobi87";
 //const char* password = "albertpanzio";
 
 // config static IP
-IPAddress ip(192, 168, 50, 155); // where 155 is the desired IP Address
+IPAddress ip(192, 168, 50, 156); // where 155 is the desired IP Address
 IPAddress gateway(192, 168, 50, 185); // set gateway
 IPAddress subnet(255, 255, 255, 0); // set subnet mask
 
@@ -58,7 +59,7 @@ const char index_html[] PROGMEM = R"rawliteral(
 </head>
 
 <body>
-  <h2>Vilagitas Napelemrol</h2>
+  <h2>Hutoszekreny Napelemrol</h2>
   %BUTTONPLACEHOLDER%
 <script>function toggleCheckbox(element) {
   var xhr = new XMLHttpRequest();
@@ -66,6 +67,7 @@ const char index_html[] PROGMEM = R"rawliteral(
   else { xhr.open("GET", "/update?relay="+element.id+"&state=0", true); }
   xhr.send();
 }</script>
+
 </body>
 </html>
 )rawliteral";
@@ -77,7 +79,7 @@ String processor(const String& var){
     String buttons ="";
     for(int i=1; i<=NUM_RELAYS; i++){
       String relayStateValue = relayState(i);
-      buttons+= "<h4>Vilagitas - (GPIO " + String(relayGPIOs[i-1]) + ")</h4><label class=\"switch\"><input type=\"checkbox\" onchange=\"toggleCheckbox(this)\" id=\"" + String(i) + "\" "+ relayStateValue +"><span class=\"slider\"></span></label>";
+      buttons+= "<h4>Hutoszekreny - (GPIO " + String(relayGPIOs[i-1]) + ")</h4><label class=\"switch\"><input type=\"checkbox\" onchange=\"toggleCheckbox(this)\" id=\"" + String(i) + "\" "+ relayStateValue +"><span class=\"slider\"></span></label>";
     }
     return buttons;
   }
